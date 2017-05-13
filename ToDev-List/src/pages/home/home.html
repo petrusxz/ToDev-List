@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>
+      ToDev List
+    </ion-title>
+  </ion-navbar>
+  <ion-toolbar>
+    <ion-item>
+      <ion-input type="text" value="" [(ngModel)]="title"></ion-input>
+    </ion-item>
+    <ion-buttons end>
+      <button ion-button icon-only color="royal" (click)="saveItem()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item *ngFor="let item of items">{{item}}</ion-item>
+  </ion-list>
+</ion-content>
