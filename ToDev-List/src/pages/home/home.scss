@@ -2,7 +2,21 @@ page-home {
 
     .item-md {
         background-color: transparent;    
-        padding-left: 0;    
+        padding-left: 0; 
+        margin-left: 0;
+        color: white;
+    }    
+
+    .completed {
+        text-decoration: line-through;
+        color: lightgray;
     }
-    
-}
+
+    ion-checkbox {
+        margin-right: 20px !important;
+    }
+
+    ion-label {
+        color: black;
+    }
+}    
