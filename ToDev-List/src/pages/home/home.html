@@ -4,9 +4,10 @@
       ToDev List
     </ion-title>
   </ion-navbar>
-  <ion-toolbar>
+  <!-- Adding new item -->
+  <ion-toolbar color="primary">
     <ion-item>
-      <ion-input type="text" value="" [(ngModel)]="title"></ion-input>
+      <ion-input type="text" value="" [(ngModel)]="newItem.title"></ion-input>
     </ion-item>
     <ion-buttons end>
       <button ion-button icon-only color="royal" (click)="saveItem()">
@@ -16,8 +17,20 @@
   </ion-toolbar>
 </ion-header>
 
+<!-- List of items added -->
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let item of items">{{item}}</ion-item>
+    <ion-item-sliding *ngFor="let item of items; let i = index">
+      <ion-item>
+        <ion-label [class.completed]="item.complete">{{item.title}}</ion-label>
+        <ion-checkbox color="primary" (click)="itemCompleted()" [(ngModel)]="item.complete"></ion-checkbox>
+      </ion-item>
+      <ion-item-options>
+        <button color="danger" (click)="delete(i)">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>
