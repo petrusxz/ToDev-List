@@ -1,36 +1,30 @@
 <ion-header>
+
   <ion-navbar color="primary">
     <ion-title>
       ToDev List
     </ion-title>
   </ion-navbar>
-  <!-- Adding new item -->
-  <ion-toolbar color="primary">
-    <ion-item>
-      <ion-input type="text" value="" [(ngModel)]="newItem.title"></ion-input>
-    </ion-item>
-    <ion-buttons end>
-      <button ion-button icon-only color="royal" (click)="saveItem()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
+
 </ion-header>
 
-<!-- List of items added -->
 <ion-content padding>
+
   <ion-list>
-    <ion-item-sliding *ngFor="let item of items; let i = index">
-      <ion-item>
-        <ion-label [class.completed]="item.complete">{{item.title}}</ion-label>
-        <ion-checkbox color="primary" (click)="itemCompleted()" [(ngModel)]="item.complete"></ion-checkbox>
-      </ion-item>
+    <ion-item-sliding *ngFor="let item of items; let i = index" (click)="itemDetail(item)">
+      <ion-item>{{item.title}}</ion-item>
       <ion-item-options>
-        <button color="danger" (click)="delete(i)">
-          <ion-icon name="trash"></ion-icon>
-          Delete
-        </button>
+        <button padding ion-button (click)="delete(i)" color="danger"><ion-icon name="trash"></ion-icon></button>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+
+  <div *ngIf="items.length === 0">
+    <img src="assets/images/empty-list.png">
+  </div>
+
+  <ion-fab right bottom>
+    <button ion-fab color="dark" (click)="addItem()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+  
 </ion-content>

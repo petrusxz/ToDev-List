@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { ModalController, NavController } from 'ionic-angular';
 import { Data } from '../../providers/data/data';
 
-import { ToDevListModel } from '../../models/todevlist-model';
+import { AddItemPage } from '../add-item/add-item'
+import { ItemDetailPage } from '../item-detail/item-detail';
 
 @Component({
   selector: 'page-home',
@@ -10,11 +11,14 @@ import { ToDevListModel } from '../../models/todevlist-model';
 })
 export class HomePage {
 
-  newItem: ToDevListModel = new ToDevListModel();
   public items = [];
 
-  constructor(public navCtrl: NavController, public dataService: Data) {
+  constructor(public navCtrl: NavController, public dataService: Data, public modalCtrl: ModalController) {
     // this.dataService.clearData();
+    this.getList();
+  }
+
+  getList() {
     this.dataService.getData().then((todos) => {
       if (todos) {
         this.items = JSON.parse(todos);
@@ -22,16 +26,27 @@ export class HomePage {
     });
   }
 
-  itemCompleted() {
-      this.dataService.save(this.items);
+  addItem() {
+    let addModal = this.modalCtrl.create(AddItemPage);
+
+    addModal.onDidDismiss((item) => {
+      if (item) {
+        this.saveItem(item);
+      }
+    });
+
+    addModal.present();
   }
 
-  saveItem() {
-    if (this.newItem.title) {
-      this.items.push(this.newItem);
-      this.dataService.save(this.items);
-      this.newItem = new ToDevListModel();
-    }
+  saveItem(item) {
+    this.items.push(item);
+    this.dataService.save(this.items);
+  }
+
+  itemDetail(item) {
+    this.navCtrl.push(ItemDetailPage, {
+      item: item
+    });        
   }
 
   delete(index: number) {
