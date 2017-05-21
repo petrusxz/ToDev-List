@@ -12,11 +12,30 @@ page-home {
         color: lightgray;
     }
 
+    img {
+    position:absolute;
+    left: 0;
+    right: 0;
+    margin:0 auto;
+    top:50%;
+    transform:translateY(-60%);
+}
+
+    ion-list {
+        color: black; 
+        margin-top: 16px !important;
+    }   
+
     ion-checkbox {
         margin-right: 20px !important;
+        margin-left: 20px !important;
     }
 
     ion-label {
         color: black;
+    }
+     
+    ion-datetime {
+        font-size: 10px;
     }
 }    
