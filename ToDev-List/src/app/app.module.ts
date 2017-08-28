@@ -1,14 +1,25 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-import { IonicStorageModule } from '@ionic/storage';
 import { DatePicker } from '@ionic-native/date-picker';
-
 import { MyApp } from './app.component';
+
 import { HomePage } from '../pages/home/home';
 import { AddItemPage } from '../pages/add-item/add-item'
 import { ItemDetailPage } from '../pages/item-detail/item-detail';
-import { Data } from '../providers/data/data';
+
+import { FirebaseData } from '../providers/firebase-data';
+import { AngularFireModule } from "angularfire2";
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyCtrB2QUrDfWg2qcBOKI5WEJVoaeg-JVxE",
+  authDomain: "todev-list.firebaseapp.com",
+  databaseURL: "https://todev-list.firebaseio.com",
+  projectId: "todev-list",
+  storageBucket: "todev-list.appspot.com",
+  messagingSenderId: "454850138447"
+};
 
 @NgModule({
   declarations: [
@@ -20,7 +31,8 @@ import { Data } from '../providers/data/data';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -29,6 +41,6 @@ import { Data } from '../providers/data/data';
     AddItemPage,
     ItemDetailPage
   ],
-  providers: [Data, {provide: ErrorHandler, useClass: IonicErrorHandler}, DatePicker]
+  providers: [FirebaseData, { provide: ErrorHandler, useClass: IonicErrorHandler }, DatePicker]
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,56 +1,80 @@
 import { Component } from '@angular/core';
-import { ModalController, NavController } from 'ionic-angular';
-import { Data } from '../../providers/data/data';
+import { NavController, AlertController } from 'ionic-angular';
+import { FirebaseListObservable } from "angularfire2/database";
+import { FirebaseData } from "../../providers/firebase-data";
 
-import { AddItemPage } from '../add-item/add-item'
+import { AddItemPage } from '../add-item/add-item';
 import { ItemDetailPage } from '../item-detail/item-detail';
 
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html'
+  templateUrl: 'home.html',
 })
 export class HomePage {
 
-  public items = [];
+  public home: string = 'ideas';
+  public items: FirebaseListObservable<any[]>;
+  isEmpty: boolean = false;
 
-  constructor(public navCtrl: NavController, public dataService: Data, public modalCtrl: ModalController) {
-    // this.dataService.clearData();
-    this.getList();
+  constructor(private fbService: FirebaseData, public navCtrl: NavController, public alertCtrl: AlertController) { }
+
+  ionViewDidLoad() {
+    this.getData();
   }
 
-  getList() {
-    this.dataService.getData().then((todos) => {
-      if (todos) {
-        this.items = JSON.parse(todos);
-      }
+  getData() {
+    this.isEmpty = false;
+
+    this.items = this.fbService.getItemsList({ orderByChild: 'type', equalTo: this.home });
+
+    if (this.items._checkOperationCases.length == 0) {
+      this.isEmpty = true;
+    }
+  }
+
+  moveToLimbo(item) {
+    this.fbService.updateItem(item.$key, { type: 'limbo' });
+  }
+
+  restoreItem(item) {
+    if (item.startDate == null) {
+      this.fbService.updateItem(item.$key, { type: 'ideas' });
+    }
+    else {
+      this.fbService.updateItem(item.$key, { type: 'projects' });
+    }
+  }
+
+  deleteItem(item) {
+    let confirm = this.alertCtrl.create({
+      title: 'Delete item',
+      message: 'Are you sure that you want to delete this item permanently?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+            this.fbService.deleteItem(item.$key);
+          }
+        }
+      ]
     });
+    confirm.present();
   }
 
-  addItem() {
-    let addModal = this.modalCtrl.create(AddItemPage);
-
-    addModal.onDidDismiss((item) => {
-      if (item) {
-        this.saveItem(item);
-      }
+  newItem() {
+    this.navCtrl.push(AddItemPage, {
+      pageTitle: this.home
     });
-
-    addModal.present();
-  }
-
-  saveItem(item) {
-    this.items.push(item);
-    this.dataService.save(this.items);
   }
 
   itemDetail(item) {
     this.navCtrl.push(ItemDetailPage, {
       item: item
-    });        
-  }
-
-  delete(index: number) {
-    this.items.splice(index, 1);
-    this.dataService.save(this.items);
+    });
   }
 }

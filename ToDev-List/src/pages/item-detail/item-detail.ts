@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 
-import { ToDevListModel } from '../../models/todevlist-model';
+import { ToDevItem } from '../../models/todev-item';
 
 @Component({
   selector: 'page-item-detail',
@@ -9,13 +9,17 @@ import { ToDevListModel } from '../../models/todevlist-model';
 })
 export class ItemDetailPage {
 
-  newItem = new ToDevListModel;
+  project = new ToDevItem;
+  startDateFormatted: string;
+  endDateFormatted: string;
 
   constructor(public navParams: NavParams, public view: ViewController) {
   }
 
   ionViewDidLoad() {
-    this.newItem = this.navParams.get('item');
+    this.project = this.navParams.get('item');
+    this.startDateFormatted = this.project.startDate.toLocaleDateString('pt-BR');
+    this.endDateFormatted = this.project.endDate.toLocaleDateString('pt-BR');
   }   
 
   close() {

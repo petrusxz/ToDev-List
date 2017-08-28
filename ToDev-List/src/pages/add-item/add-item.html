@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      Add Project
+      Add {{pageTitle}}
     </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="close()"><ion-icon name="close"></ion-icon></button>
@@ -9,32 +9,51 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content padding>
 
-  <ion-list>
+  <ion-list inset>
 
-    <ion-item>
-      <ion-label floating>Title</ion-label>
-      <ion-input type="text" [(ngModel)]="newItem.title"></ion-input>
-    </ion-item>
+    <form [formGroup]="ideaForm">
 
-    <ion-item>
-      <ion-label floating>Description</ion-label>
-      <ion-input type="text" [(ngModel)]="newItem.description"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label floating>Title</ion-label>
+        <ion-input formControlName="title" type="text" maxLength="40" [(ngModel)]="newItem.title"></ion-input>
+      </ion-item>
 
-    <ion-item padding-top>
-      <button ion-button item-end clear icon-only color="dark" (click)="pickStartDate()"><ion-icon name="calendar"></ion-icon></button>
-      <ion-label class="placeholder">Start Date</ion-label>
-      <ion-input type="text" [(ngModel)]="newItem.startDate" readonly></ion-input>
-    </ion-item>
+      <div class="warning" *ngIf="!ideaForm.controls.title.valid && submitAttempt">
+        <p>This title is not valid</p>
+      </div>
 
-    <ion-item padding-bottom>
-      <button ion-button item-end clear icon-only color="dark" (click)="pickEndDate()"><ion-icon name="calendar"></ion-icon></button>
-      <ion-label class="placeholder">End Date</ion-label>
-      <ion-input type="text" [(ngModel)]="newItem.endDate" readonly></ion-input>
-    </ion-item>
+      <ion-item padding-bottom>
+        <ion-label floating>Description</ion-label>
+        <ion-textarea formControlName="description" maxLength="186" [(ngModel)]="newItem.description"></ion-textarea>
+      </ion-item>
+
+      <div class="warning" *ngIf="!ideaForm.controls.description.valid && submitAttempt">
+        <p>This description is not valid</p>
+      </div>
+
+    </form>
+
+    <div *ngIf="page == 'projects'">
+
+        <ion-item padding-top>
+          <button ion-button item-end clear icon-only color="dark" (click)="pickStartDate()"><ion-icon name="calendar"></ion-icon></button>
+          <ion-label class="placeholder">Start Date</ion-label>
+          <ion-label>{{newItem.startDate}}</ion-label>
+        </ion-item>
+
+      <div class="warning" *ngIf="newItem.startDate == null && submitAttempt">
+        <p>Choose the start date</p>
+      </div>
+
+        <ion-item padding-bottom>
+          <button ion-button item-end clear icon-only color="dark" (click)="pickEndDate()"><ion-icon name="calendar"></ion-icon></button>
+          <ion-label class="placeholder">End Date</ion-label>
+          <ion-label>{{newItem.endDate}}</ion-label>
+        </ion-item>
+
+    </div>
 
   </ion-list>
 
