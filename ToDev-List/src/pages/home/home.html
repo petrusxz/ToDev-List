@@ -6,25 +6,121 @@
     </ion-title>
   </ion-navbar>
 
+  <ion-toolbar no-border-top color="primary">
+    <ion-segment [(ngModel)]="home" color="light">
+      <ion-segment-button value="ideas" (click)="getData()">
+        Ideas
+      </ion-segment-button>
+      <ion-segment-button value="projects" (click)="getData()">
+        Projects
+      </ion-segment-button>
+      <ion-segment-button value="limbo" (click)="getData()">
+        Limbo
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
 </ion-header>
 
-<ion-content padding>
+<ion-content>
 
-  <ion-list>
-    <ion-item-sliding *ngFor="let item of items; let i = index" (click)="itemDetail(item)">
-      <ion-item>{{item.title}}</ion-item>
-      <ion-item-options>
-        <button padding ion-button (click)="delete(i)" color="danger"><ion-icon name="trash"></ion-icon></button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
+  <div [ngSwitch]="home">
 
-  <div *ngIf="items.length === 0">
-    <img src="assets/images/empty-list.png">
+    <p class="spinner-position" *ngIf="!(items | async)">
+      <ion-spinner name="dots"></ion-spinner>
+    </p>
+
+    <div *ngIf="(items | async) == 0">
+      <img src="assets/images/empty-list.png">
+    </div>
+
+    <div *ngSwitchCase="'ideas'">
+
+      <ion-card *ngFor="let idea of items | async">
+
+        <ion-card-content>
+          <ion-card-title>
+            {{idea.title}}
+          </ion-card-title>
+          <p>
+            {{idea.description}}
+          </p>
+        </ion-card-content>
+
+        <ion-row no-padding>
+          <ion-col>
+
+          </ion-col>
+          <ion-col text-center>
+            <button ion-button clear small color="danger" icon-left>
+          <ion-icon name='code'></ion-icon>
+          Start project
+        </button>
+          </ion-col>
+          <ion-col text-right>
+            <button ion-button clear small color="danger" icon-left (click)="moveToLimbo(idea)">
+          <ion-icon name='trash'></ion-icon>
+          Limbo
+        </button>
+          </ion-col>
+        </ion-row>
+
+      </ion-card>
+
+      <ion-fab right bottom>
+        <button ion-fab color="secondary" (click)="newItem()"><ion-icon name="bulb"></ion-icon></button>
+      </ion-fab>
+
+    </div>
+
+    <div *ngSwitchCase="'projects'">
+
+      <ion-card *ngFor="let project of items | async">
+
+        <ion-card-content>
+          <ion-card-title>
+            {{project.title}}
+          </ion-card-title>
+          <p>
+            {{project.description}}
+          </p>
+        </ion-card-content>
+
+        <ion-row no-padding>
+          <ion-col>
+          </ion-col>
+          <ion-col text-center>
+            <button ion-button clear small color="danger" icon-left (click)="itemDetail(project)">
+          <ion-icon name='open'></ion-icon>
+          Edit
+        </button>
+          </ion-col>
+          <ion-col text-right>
+            <button ion-button clear small color="danger" icon-left (click)="moveToLimbo(project)">
+          <ion-icon name='trash'></ion-icon>
+          Limbo
+        </button>
+          </ion-col>
+        </ion-row>
+
+      </ion-card>
+
+      <ion-fab right bottom>
+        <button ion-fab color="dark" (click)="newItem()"><ion-icon name="code"></ion-icon></button>
+      </ion-fab>
+
+    </div>
+
+    <div *ngSwitchCase="'limbo'">
+      <ion-list>
+        <ion-item *ngFor="let limboItem of items | async">
+          <h2 class="h2-limbo">{{limboItem.title}}</h2>
+          <button ion-button clear item-right (click)="restoreItem(limboItem)"><ion-icon class="limbo-button" name="paper-plane"></ion-icon></button>
+          <button ion-button clear item-right (click)="deleteItem(limboItem)"><ion-icon class="limbo-button" name="trash"></ion-icon></button>
+        </ion-item>
+      </ion-list>
+    </div>
+
   </div>
 
-  <ion-fab right bottom>
-    <button ion-fab color="dark" (click)="addItem()"><ion-icon name="add"></ion-icon></button>
-  </ion-fab>
-  
 </ion-content>

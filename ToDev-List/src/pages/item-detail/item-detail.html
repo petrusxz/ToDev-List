@@ -9,26 +9,24 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
   <ion-list-header>TITLE</ion-list-header>
-  <ion-item>{{newItem.title}}</ion-item>
+  <ion-item no-lines>{{project.title}}</ion-item>
 
   <ion-list-header>DESCRIPTION</ion-list-header>
-  <ion-item>{{newItem.description}}</ion-item>
-
+  <ion-item no-lines>{{project.description}}</ion-item>
 
   <ion-list-header>TIME</ion-list-header>
   <ion-item>
-    <ion-label>Starts:</ion-label><ion-label>{{newItem.startDate}}</ion-label>
+    <ion-label>Starts:</ion-label><ion-label>{{startDateFormatted}}</ion-label>
   </ion-item>
   <ion-item>
-    <ion-label>Ends:</ion-label><ion-label>{{newItem.endDate}}</ion-label>
+    <ion-label>Ends:</ion-label><ion-label>{{endDateFormatted}}</ion-label>
   </ion-item>
 
-  <ion-item>
-    <ion-toggle [(ngModel)]="newItem.complete"></ion-toggle>
+  <ion-item padding-top no-lines>
+    <ion-toggle [(ngModel)]="project.complete"></ion-toggle>
     <ion-label>
       Complete
     </ion-label>

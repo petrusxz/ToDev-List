@@ -12,18 +12,31 @@ page-home {
         color: lightgray;
     }
 
+    .spinner-position {
+        text-align: center;
+        margin-bottom: 40px !important;
+    }
+
+    .limbo-button {
+        font-size: 2em;        
+    }
+
+    .h2-limbo {
+        margin-left: 12px;
+    }
+
     img {
-    position:absolute;
-    left: 0;
-    right: 0;
-    margin:0 auto;
-    top:50%;
-    transform:translateY(-60%);
-}
+        position: absolute;
+        margin: auto;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
 
     ion-list {
         color: black; 
-        margin-top: 16px !important;
+        margin-top: 5px !important;
     }   
 
     ion-checkbox {
