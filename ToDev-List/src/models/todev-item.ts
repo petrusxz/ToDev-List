@@ -9,6 +9,9 @@ export class ToDevItem {
     complete: boolean = false;
     
     constructor(values: Object = {}) {
-        Object.assign(this, values);
+        Object.keys(this).forEach(key => {
+            if (values.hasOwnProperty(key))
+                this[key] = values[key];
+        });
     }
 }
